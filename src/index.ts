@@ -4,6 +4,7 @@ import connect from "./utils/database";
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import { Request, Response } from "express";
+import docs from "./docs/route";
 
 async function init() {
     try {
@@ -31,6 +32,8 @@ async function init() {
 
 
         app.use('/api', router)
+
+        docs(app);
     
         app.listen(port, () => console.log(`server is running on http://localhost:${port}`));
 

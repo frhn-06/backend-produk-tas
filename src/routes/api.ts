@@ -12,13 +12,62 @@ router.get('/dummy', dummyController.dummy)
 
 // ------------------------------------------------------------------------------------------
 
-router.post("/auth/register", authController.register);
+router.post("/auth/register", authController.register
+    /**
+      #swagger.tags = ['Auth']
+      #swagger.requestBody = {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/components/schemas/RegisterRequest"
+            }
+          }
+        }
+      } 
+    */
+);
 
-router.post("/auth/activation", authController.activation);
+router.post("/auth/activation", authController.activation
+    /**
+      #swagger.tags = ['Auth']
+      #swagger.requestBody = {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/components/schemas/Activation"
+            }
+          }
+        }
+      } 
+    */
+);
 
-router.post("/auth/login", authController.login);
+router.post("/auth/login", authController.login
+    /**
+      #swagger.tags = ['Auth']
+      #swagger.requestBody = {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/components/schemas/LoginRequest"
+            }
+          }
+        }
+      } 
+    */
+);
 
-router.get("/auth/me", authMiddleware, authController.me);
+router.get("/auth/me", authMiddleware, authController.me
+    /**
+      #swagger.tags = ['Auth']
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+);
 
 
 // ------------------------------------------------------------------------------------------
