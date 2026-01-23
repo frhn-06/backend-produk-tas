@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			body {
+				font-family: Arial, Helvetica, sans-serif;
+			}
+
+			p {
+				font-size: 1rem;
+			}
+
+			.container {
+				width: 100vw;
+				background-color: #eee;
+				margin: 0;
+				border-radius: .5rem;
+				overflow: hidden;
+				border: 1px solid #919191;
+			}
+
+			.header {
+				background-color: rgb(123, 200, 8);
+				padding: 6px 8px;
+			}
+
+			.header h1 {
+				font-size: xx-large;
+				color: white;
+				text-align: center;
+			}
+
+
+			.main {
+				padding: 1rem;
+			}
+
+			.main h2 {
+				font-size: x-large;
+				margin-bottom: .5rem;
+			}
+
+			.main ul {
+				list-style: none;
+				margin: 1rem 0;
+				display: flex;
+				flex-direction: column;
+				gap: .3rem;
+			}
+
+			.main a {
+				margin: 1rem 0;
+				padding: .6rem 1.2rem;
+				display: block;
+				width: fit-content;
+				border-radius: 1rem;
+				background-color: rgb(143, 227, 16);
+				font-size: large;
+				color: white;
+				text-decoration: none;
+				font-weight: bold;
+			}
+
+			.main .closing {
+				/* font-size: large; */
+				font-weight: bold;
+			}
+
+			
+
+			.footer {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				padding: 1rem ;
+				background-color: #ddd;
+			}
+
+			.footer p {
+				font-size: .9rem;
+			}
+
+			@media screen and (min-width: 762px) {
+				.container {
+					max-width: 600px;
+					margin: 2px auto;
+				}
+			}
+
+		</style>
+</head>
+<body>
+    <div class="container">
+			<div class="header">
+				<h1>
+					Selamat Datang!
+				</h1>
+			</div>
+
+			<div class="main">
+				<h2>
+					Halo aan
+				</h2>
+				<p>
+					Terimakasih telah mendaftar di layanan kami.
+				</p>
+				<p>
+					Berikut adalah informasi dari akun anda:
+				</p>
+				<ul>
+					<li>
+						<b>Nama Lengkap</b> : FARHAN MUNIF
+					</li>
+					<li>
+						<b>Email</b> : layarf535@gmail.com
+					</li>
+					<li>
+						<b>Tanggal Pendaftaran</b> : 
+					</li>
+				</ul>
+				<p>
+					click di bawah ini untuk mengaktifasi akun anda
+				</p>
+				<a href="">
+					Aktivasi
+				</a>
+				<p>
+          Jika Anda memiliki pertanyaan, jangan ragu untuk menghubungi Kami.
+        </p>
+        <p class="closing">
+          Salam Hangat, Velaro
+        </p>
+			</div>
+
+			<div class="footer">
+				<p>
+					&copy; 2025 Velaro Official | dilindungi
+				</p>
+			</div>
+		</div>
+</body>
+</html>
