@@ -7,7 +7,7 @@ import path from 'path';
 
 
 const docs = (app: Express) => {
-    const styleCss = fs.readFileSync(path.resolve(__dirname, "../../node-modules/swagger-ui-dist/swagger-ui.css"), 'utf-8');
+    const styleCss = fs.readFileSync(path.resolve(__dirname, "../../node_modules/swagger-ui-dist/swagger-ui.css"), 'utf-8');
 
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
         customCss: styleCss
