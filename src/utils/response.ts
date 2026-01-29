@@ -1,6 +1,7 @@
 import { Response } from "express"
 import mongoose from "mongoose"
 import * as yup from "yup"
+import { IPagination } from "./interface"
 
 export default {
     success(res: Response, data: any, message: string) {
@@ -62,12 +63,22 @@ export default {
             },
         })
     },
-    unauthorize(res: Response) {
+    unauthorize(res: Response, message?: string) {
         return res.status(401).json({
             meta: {
                 status: 401,
-                message: "unauthorized"
+                message: message || "unauthorized"
             }
+        })
+    },
+    pagination(res: Response, data: any[], pagination: IPagination, message: string) {
+        return res.status(200).json({
+            meta: {
+                status: 200,
+                message: message
+            },
+            data: data,
+            pagination: pagination
         })
     }
 }

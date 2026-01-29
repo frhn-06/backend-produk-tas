@@ -38,6 +38,14 @@ const doc = {
             },
             Activation: {
                 code: "1234"
+            },
+            RemoveImage: {
+                fileUrl: "https://cloudinary......./foto.jpg"
+            },
+            CategoryRequest: {
+                name: "category 1",
+                icon: "category.jpg",
+                description: "this is description of category 1"
             }
         }
     }

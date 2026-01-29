@@ -3,6 +3,10 @@ import express from 'express'
 import dummyController from '../controllers/dummy.controller';
 import authController from '../controllers/auth.controller';
 import authMiddleware from '../middleware/auth.middleware';
+import mediaMiddleware from '../middleware/media.middleware';
+import mediaControler from '../controllers/media.controler';
+import aclMiddleware from '../middleware/acl.middleware';
+import categoryController from '../controllers/category.controller';
 
 
 const router = express.Router();
@@ -10,7 +14,7 @@ const router = express.Router();
 router.get('/dummy', dummyController.dummy)
 
 
-// ------------------------------------------------------------------------------------------
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 router.post("/auth/register", authController.register
     /**
@@ -70,7 +74,185 @@ router.get("/auth/me", authMiddleware, authController.me
 );
 
 
-// ------------------------------------------------------------------------------------------
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+router.post("/media/upload-single", [authMiddleware, mediaMiddleware.single("file")], mediaControler.uploadSingle
+    /**
+      #swagger.tags = ["Media"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+      #swagger.requestBody = {
+        required: true,
+        content: {
+          "multipart/form-data" : {
+            schema: {
+              type: "object",
+              properties: {
+                file: {
+                  type: "string",
+                  format: "binary"
+                }
+              }
+            }
+          }
+        }
+      } 
+    */
+);
+
+router.post("/media/upload-multiple", [authMiddleware, mediaMiddleware.multiple("files")], mediaControler.uploadMultiple
+    /**
+      #swagger.tags = ["Media"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }] 
+      #swagger.requestBody = {
+        required: true,
+        content: {
+          "multipart/form-data" : {
+            schema: {
+              type: "object",
+              properties: {
+                files: {
+                  type: "string",
+                  format: "array",
+                  items: {
+                    type: "string",
+                    format: "binary"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    */
+);
+router.delete("/media/remove", authMiddleware, mediaControler.remove
+    /**
+      #swagger.tags = ["Media"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }] 
+      #swagger.requestBody = {
+        required: true,
+        content: {
+          "application/json" : {
+            schema: {
+              $ref: "#/components/schemas/RemoveImage"
+            }
+          }
+        }
+      }  
+    */
+);
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+router.post("/category", [authMiddleware, aclMiddleware(["admin"])], categoryController.create
+    /**
+      #swagger.tags = ["Category"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+      #swagger.requestBody = {
+        required: true,
+        content: {
+          "application/json" : {
+            schema: {
+              $ref: "#/components/schemas/CategoryRequest"
+            }
+          }
+        }
+      } 
+    */
+);
+
+router.get("/category", categoryController.findAll
+    /*
+      #swagger.tags = ["Category"]
+    */
+);
+
+router.get("/category/:id", categoryController.findOne
+    /**
+      #swagger.tags = ["Category"]
+    */
+);
+
+router.put("/category/:id", [authMiddleware, aclMiddleware(["admin"])], categoryController.update
+    /**
+      #swagger.tags = ["Category"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+      #swagger.requestBody = {
+        required: true,
+        content: {
+          "application/json" : {
+            schema: {
+              $ref: "#/components/schemas/CategoryRequest"
+            }
+          }
+        }
+      }
+    */
+);
+
+router.delete("/category/:id/delete", [authMiddleware, aclMiddleware(["admin"])], categoryController.remove
+    /**
+      #swagger.tags = ["Category"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+);
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
 
 
 export default router;

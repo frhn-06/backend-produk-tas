@@ -12,3 +12,11 @@ export interface IReqUser extends Request {
     user?: IUserToken;
 }
 
+
+
+export interface IPagination {
+    current: number;
+    totalPage: number;
+    total: number;
+}
+
