@@ -33,7 +33,7 @@ export default {
     
             const query = BuidQuery(search)
             
-            const result = await CategoryModel.find(query).limit(+limit).skip((+page - 1)* +limit).sort({createdAt: 1}).exec();
+            const result = await CategoryModel.find(query).limit(+limit).skip((+page - 1)* +limit).sort({createdAt: -1}).exec();
 
             const total = await CategoryModel.countDocuments(query);
 
