@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import { Request, Response } from "express";
 import docs from "./docs/route";
+import errorMiddleware from "./middleware/error.middleware";
 
 async function init() {
     try {
@@ -34,7 +35,11 @@ async function init() {
         app.use('/api', router)
 
         docs(app);
-    
+
+        app.use(errorMiddleware.severRoute());
+        
+        app.use(errorMiddleware.serverError());
+
         app.listen(port, () => console.log(`server is running on http://localhost:${port}`));
 
     } catch(error) {
