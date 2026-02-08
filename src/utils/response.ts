@@ -47,6 +47,7 @@ export default {
             });
         }
 
+
         return res.status(500).json({
             meta: {
                 status: 500,

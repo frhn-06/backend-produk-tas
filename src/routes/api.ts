@@ -7,6 +7,7 @@ import mediaMiddleware from '../middleware/media.middleware';
 import mediaControler from '../controllers/media.controler';
 import aclMiddleware from '../middleware/acl.middleware';
 import categoryController from '../controllers/category.controller';
+import productController from '../controllers/product.controller';
 
 
 const router = express.Router();
@@ -243,6 +244,102 @@ router.delete("/category/:id/delete", [authMiddleware, aclMiddleware(["admin"])]
       }]
     */
 );
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+router.post("/product", [authMiddleware, aclMiddleware(["admin"])], productController.create
+    /**
+      #swagger.tags = ["Product"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+      #swagger.requestBody = {
+        required: true,
+        content : {
+          "application/json" : {
+            schema: {
+              $ref: "#/components/schemas/ProductCreateRequest"
+            }
+          }
+        }
+      }
+    */
+);
+
+router.get("/product", productController.findAll
+    /**
+      #swagger.tags = ["Product"] 
+    */
+);
+
+router.get("/product/:id", productController.findOneByID
+    /*
+      #swagger.tags = ["Product"]
+    */
+);
+
+router.get("/product/:slug/slug", productController.findOneBySlug
+    /**
+      #swagger.tags = ["Product"] 
+    */
+);
+
+router.put("/product/:id", [authMiddleware, aclMiddleware(["admin"])], productController.update
+    /*
+      #swagger.tags = ["Product"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+      #swagger.requestBody = {
+        required: true,
+        content : {
+          "application/json" : {
+            schema: {
+              $ref: "#/components/schemas/ProductUpdateRequest"
+            }
+          }
+        }
+      }
+    */
+);
+
+router.put("/product/:id/delete", [authMiddleware, aclMiddleware(["admin"])], productController.delete
+    /*
+      #swagger.tags = ["Product"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+);
+
+
+router.get("/product-deleted", [authMiddleware, aclMiddleware(["admin"])], productController.findDelete
+    /*
+      #swagger.tags = ["Product"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+)
+
 
 
 

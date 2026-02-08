@@ -46,6 +46,27 @@ const doc = {
                 name: "category 1",
                 icon: "category.jpg",
                 description: "this is description of category 1"
+            },
+            ProductCreateRequest: {
+                name: "Product 1",
+                description: "ini adalah product 1",
+                categoryId: ":id",
+                price: 50000,
+                quantity: 100,
+                image: "foto.jpg"
+            },
+            ProductUpdateRequest: {
+                name: "Product 1",
+                description: "ini adalah product 1",
+                categoryId: ":id",
+                price: 50000,
+                quantity: 100,
+                discount: 0,
+                isPublish: true,
+                isFeatured: false,
+                isDeleted: false,
+                image: "foto.jpg",
+                images: ["foto1.jpg", "foto2.jpg", "foto3.jpg"],
             }
         }
     }

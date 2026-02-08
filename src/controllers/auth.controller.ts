@@ -13,6 +13,17 @@ export default {
 
             await UserDTO.validate({userName, fullName, email, password, confirmPassword});
 
+            const duplicate = await UserModel.findOne({
+                $or: [
+                    {userName : userName},
+                    {email: email}
+                ]
+            });
+
+            if(duplicate) {
+                return response.error(res, 400, "userName or email already owned");
+            }
+
             const result = await UserModel.create({userName, email, fullName, password});
 
             response.success(res, result, "success to registration");
