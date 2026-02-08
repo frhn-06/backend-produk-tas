@@ -53,7 +53,7 @@ export default {
 
             const query = handleQuery(search, featured, publish, discount, category);
 
-            const result = await ProductModel.find({...query, isDeleted: false}).limit(+limit).skip((+page - 1) * +limit).sort({createdAt: -1}).exec();
+            const result = await ProductModel.find({...query, isDeleted: false}).populate("categoryId", "name").limit(+limit).skip((+page - 1) * +limit).sort({createdAt: -1}).exec();
 
             const count = await ProductModel.countDocuments({...query, isDeleted: false});
 
