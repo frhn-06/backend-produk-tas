@@ -157,6 +157,52 @@ export default {
         }
     },
 
+    async restore(req: IReqUser, res: Response) {
+        try {
+            const {id} = req.params;
+
+            if(!isValidObjectId(id)) {
+                return response.notFound(res, "product is not found");
+            }
+
+            const result = await ProductModel.findByIdAndUpdate(id, {
+                isDeleted: false
+            }, {
+                new: true
+            });
+
+            if(!result) {
+                return response.error(res, null, "failed to restore product")
+            }
+
+            response.success(res, result, "success to restore product");
+
+        }catch(error) {
+            response.error(res, error, "failed restore product")
+        }
+    },
+
+    async deletePermanent(req: IReqUser, res: Response) {
+        try {
+            const {id} = req.params;
+
+            if(!isValidObjectId(id)) {
+                return response.notFound(res, "product is not found");
+            }
+
+            const result = await ProductModel.findByIdAndDelete(id);
+
+            if(!result) {
+                return response.error(res, null, "failed to delete permanent product")
+            }
+
+            response.success(res, result, "success to delete permanent product");
+
+        }catch(error) {
+            response.error(res, error, "failed delete permanent product")
+        }
+    },
+
     async findDelete(req: IReqUser, res: Response) {
         try {
             const {page = 1, limit = 8, search} = req.query as {page: string | number; limit: string | number; search: string;};
@@ -173,7 +219,7 @@ export default {
 
             const query = setQuery(search);
 
-            const result = await ProductModel.find({...query, isDeleted: true}).limit(+limit).skip((+page - 1) * +limit).sort({createdAt: -1}).exec();
+            const result = await ProductModel.find({...query, isDeleted: true}).populate("categoryId", "name").limit(+limit).skip((+page - 1) * +limit).sort({createdAt: -1}).exec();
 
             const total = await ProductModel.countDocuments({...query, isDeleted: true});
 

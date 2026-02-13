@@ -330,6 +330,24 @@ router.put("/product/:id/delete", [authMiddleware, aclMiddleware(["admin"])], pr
     */
 );
 
+router.put("/product/:id/restore", [authMiddleware, aclMiddleware(["admin"])], productController.restore
+    /*
+      #swagger.tags = ["Product"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+);
+
+router.delete("/product/:id/delete-permanent", [authMiddleware, aclMiddleware(["admin"])], productController.deletePermanent
+    /*
+      #swagger.tags = ["Product"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+);
+
 
 router.get("/product-deleted", [authMiddleware, aclMiddleware(["admin"])], productController.findDelete
     /*
