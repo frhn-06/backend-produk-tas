@@ -67,6 +67,12 @@ const doc = {
                 isDeleted: false,
                 image: "foto.jpg",
                 images: ["foto1.jpg", "foto2.jpg", "foto3.jpg"],
+                
+            },
+            ReviewRequest: {
+                productId: ":id",
+                comment: 0,
+                stars: 0
             }
         }
     }

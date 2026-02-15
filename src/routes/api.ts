@@ -8,6 +8,7 @@ import mediaControler from '../controllers/media.controler';
 import aclMiddleware from '../middleware/acl.middleware';
 import categoryController from '../controllers/category.controller';
 import productController from '../controllers/product.controller';
+import ReviewController from '../controllers/review.controller';
 
 
 const router = express.Router();
@@ -73,6 +74,59 @@ router.get("/auth/me", authMiddleware, authController.me
       }]
     */
 );
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+router.post("/review", [authMiddleware, aclMiddleware(["admin", "member"])], ReviewController.create
+    /*
+      #swagger.tags = ["Review"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+      #swagger.requestBody = {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/components/schemas/ReviewRequest"
+            }
+          }
+        }
+      } 
+    */
+);
+
+
+router.get("/review/:productId", ReviewController.findByProduct
+    /*
+      #swagger.tags = ["Review"]
+    */
+);
+
+
+router.delete("/review/:id", [authMiddleware, aclMiddleware(["admin", "member"])], ReviewController.delete
+    /*
+      #swagger.tags = ["Review"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+);
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////

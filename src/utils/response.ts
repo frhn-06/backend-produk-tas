@@ -25,9 +25,9 @@ export default {
                 }
             });
         }
-
+        
         if(error instanceof mongoose.Error) {
-            return res.status(300).json({
+            return res.status(400).json({
                 meta: {
                     status: 400,
                     message: error.message
