@@ -449,6 +449,37 @@ router.post("/activity", [authMiddleware, aclMiddleware(["admin"])], activityCon
 );
 
 
+router.get("/activity", activityController.findAll
+    /*
+      #swagger.tags = ["Activity"]
+    */
+);
+
+router.get("/activity/:id", activityController.findById
+    /*
+      #swagger.tags = ["Activity"]
+    */
+);
+
+router.put("/activity/:id", [authMiddleware, aclMiddleware(["admin"])], activityController.update
+    /*
+      #swagger.tags = ["Activity"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+      #swagger.requestBody = {
+        requied: true,
+        content: {
+          "application/json" : {
+            schema : {
+              $ref: "#/components/schemas/ActivityRequest"
+            }
+          }
+        }
+      }
+    */
+);
+
 router.delete("/activity/:id", [authMiddleware, aclMiddleware(["admin"])], activityController.delete
     /*
       #swagger.tags = ["Activity"]

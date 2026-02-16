@@ -18,6 +18,49 @@ const activityController = {
         }
     },
 
+    async findAll(req: Request, res: Response) {
+        try {
+            const {page = 1, limit = 8} = req.query as {page: string; limit: string};
+            
+            const result = await ActivityModel.find({}).limit(+limit).skip((+page - 1) * +limit).sort({createdAt: -1}).exec();
+
+            const total = await ActivityModel.countDocuments();
+            response.pagination(res, result, {current: +page, total: +total, totalPage: Math.ceil(+total / +limit)}, "success to find all activity");
+        }catch(error) {
+            response.error(res, error, "failed to find all activity");
+        }
+    },
+
+    async findById(req: Request, res: Response) {
+        try {
+            const {id} = req.params;
+
+            if(!isValidObjectId(id)) return response.notFound(res, "activity is not found");
+
+            const result = await ActivityModel.findById(id);
+
+            if(!result) return response.notFound(res, "activity is not found");
+
+            response.success(res, result, "success to find one activity");
+        } catch(error) {
+            response.error(res, error, "failed to find one activity");
+        }
+    },
+
+    async update(req: IReqUser, res: Response) {
+        try {
+            const {id} = req.params;
+
+            if(!isValidObjectId(id)) return response.notFound(res, "activity is not found");
+
+            const result = await ActivityModel.findByIdAndUpdate(id, {...req.body});
+
+            response.success(res, result, "success to update activity");
+        } catch(error) {
+            response.error(res, error, "failed to update activity");
+        }
+    },
+
     async delete(req: IReqUser, res: Response) {
         try {
             const {id} = req.params;
