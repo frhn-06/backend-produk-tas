@@ -15,15 +15,18 @@ export const productDTO = yup.object({
     isDeleted: yup.boolean(),
     image: yup.string().required(),
     images: yup.array(yup.string()).min(1),
+    target: yup.string().required(),
+    activities: yup.array(yup.string()).required(),
     starsAgr: yup.number(),
     totalComment: yup.number(),
 })
 
 export type IProductForm = yup.InferType<typeof productDTO>
 
-export interface Product extends Omit<IProductForm, "categoryId" | "createdBy"> {
+export interface Product extends Omit<IProductForm, "categoryId" | "createdBy" | "activities"> {
     categoryId: ObjectId,
-    createdBy: ObjectId
+    createdBy: ObjectId,
+    activities: [ObjectId]
 }
 
 
@@ -89,6 +92,15 @@ const productSchema = new Schema<Product>({
         type: [schema.Types.String],
         default: []
     },
+    target: {
+        type: schema.Types.String,
+        enum: ["pria", "wanita", "anak", "unisex"],
+        required: true
+    },
+    activities: [{
+        type: schema.Types.ObjectId,
+        ref: "Activity",
+    }],
     starsAgr: {
         type: schema.Types.Number,
         default: 0

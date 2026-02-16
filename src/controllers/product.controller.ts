@@ -25,9 +25,9 @@ export default {
 
     async findAll(req: Request, res: Response) {
         try {
-            const {page = 1, limit = 8, search, publish, featured, discount, category} = req.query as {page: string | number; limit: string | number; search: string; publish: string; featured: string; discount: string; category: string};
+            const {page = 1, limit = 8, search, publish, featured, discount, category, target, activity} = req.query as {page: string | number; limit: string | number; search: string; publish: string; featured: string; discount: string; category: string; target: string; activity: string};
 
-            const handleQuery = (search?: string, featured?: string, publish?: string, discount?:string, category?:string) => {
+            const handleQuery = (search?: string, featured?: string, publish?: string, discount?:string, category?:string, target?:string, activity?: string) => {
                 let query:FilterQuery<IProductForm> = {};
                 if(search) {
                     query.$text = {$search: search}
@@ -48,10 +48,19 @@ export default {
                 if(category) {
                     query.categoryId = category
                 }
+
+                if(target) {
+                    query.target = target
+                }
+
+                if(activity) {
+                    query.activities = activity
+                }
+
                 return query;
             }
 
-            const query = handleQuery(search, featured, publish, discount, category);
+            const query = handleQuery(search, featured, publish, discount, category, target, activity);
 
             const result = await ProductModel.find({...query, isDeleted: false}).populate("categoryId", "name").limit(+limit).skip((+page - 1) * +limit).sort({createdAt: -1}).exec();
 

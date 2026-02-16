@@ -9,6 +9,7 @@ import aclMiddleware from '../middleware/acl.middleware';
 import categoryController from '../controllers/category.controller';
 import productController from '../controllers/product.controller';
 import ReviewController from '../controllers/review.controller';
+import activityController from '../controllers/activity.controller';
 
 
 const router = express.Router();
@@ -417,6 +418,57 @@ router.get("/product-deleted", [authMiddleware, aclMiddleware(["admin"])], produ
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+router.post("/activity", [authMiddleware, aclMiddleware(["admin"])], activityController.create
+    /*
+      #swagger.tags = ["Activity"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+      #swagger.requestBody = {
+        requied: true,
+        content: {
+          "application/json" : {
+            schema : {
+              $ref: "#/components/schemas/ActivityRequest"
+            }
+          }
+        }
+      }
+    */
+);
+
+
+router.delete("/activity/:id", [authMiddleware, aclMiddleware(["admin"])], activityController.delete
+    /*
+      #swagger.tags = ["Activity"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+);
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
 
 
 

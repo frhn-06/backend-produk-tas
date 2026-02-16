@@ -536,6 +536,20 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "target",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "activity",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -751,6 +765,62 @@
           }
         ]
       }
+    },
+    "/activity": {
+      "post": {
+        "tags": [
+          "Activity"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "requied": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivityRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/activity/{id}": {
+      "delete": {
+        "tags": [
+          "Activity"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -933,6 +1003,19 @@
           "stars": {
             "type": "number",
             "example": 0
+          }
+        }
+      },
+      "ActivityRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "name"
+          },
+          "image": {
+            "type": "string",
+            "example": ".jpg"
           }
         }
       }

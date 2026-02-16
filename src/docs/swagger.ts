@@ -73,6 +73,10 @@ const doc = {
                 productId: ":id",
                 comment: 0,
                 stars: 0
+            },
+            ActivityRequest : {
+                name: "name",
+                image: ".jpg"
             }
         }
     }
