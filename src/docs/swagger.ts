@@ -77,6 +77,11 @@ const doc = {
             ActivityRequest : {
                 name: "name",
                 image: ".jpg"
+            },
+            BannerRequest : {
+                name: "name",
+                image: ".jpg",
+                description: "description"
             }
         }
     }

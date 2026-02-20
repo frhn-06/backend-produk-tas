@@ -10,6 +10,7 @@ import categoryController from '../controllers/category.controller';
 import productController from '../controllers/product.controller';
 import ReviewController from '../controllers/review.controller';
 import activityController from '../controllers/activity.controller';
+import bannerController from '../controllers/banner.controller';
 
 
 const router = express.Router();
@@ -501,7 +502,70 @@ router.delete("/activity/:id", [authMiddleware, aclMiddleware(["admin"])], activ
 
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+router.post("/banner", [authMiddleware, aclMiddleware(["admin"])], bannerController.create
+    /*
+      #swagger.tags = ["Banner"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+      #swagger.requestBody = {
+        requied: true,
+        content: {
+          "application/json" : {
+            schema : {
+              $ref: "#/components/schemas/BannerRequest"
+            }
+          }
+        }
+      }
+    */
+);
+
+
+router.get("/banner", bannerController.findAll
+    /*
+      #swagger.tags = ["Banner"]
+    */
+);
+
+router.get("/banner/:id", bannerController.findOne
+    /*
+      #swagger.tags = ["Banner"]
+    */
+);
+
+router.put("/banner/:id", [authMiddleware, aclMiddleware(["admin"])], bannerController.update
+    /*
+      #swagger.tags = ["Banner"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+      #swagger.requestBody = {
+        requied: true,
+        content: {
+          "application/json" : {
+            schema : {
+              $ref: "#/components/schemas/BannerRequest"
+            }
+          }
+        }
+      }
+    */
+);
+
+router.delete("/banner/:id", [authMiddleware, aclMiddleware(["admin"])], bannerController.remove
+    /*
+      #swagger.tags = ["Banner"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+);
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
