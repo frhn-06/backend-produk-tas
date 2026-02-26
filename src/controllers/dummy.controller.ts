@@ -6,7 +6,7 @@ export default {
             meta: {
                 status: 200
             },
-            data: "oke"
+            data: "okee"
         })
     }
 }
