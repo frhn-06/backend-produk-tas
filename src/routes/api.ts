@@ -11,6 +11,7 @@ import productController from '../controllers/product.controller';
 import ReviewController from '../controllers/review.controller';
 import activityController from '../controllers/activity.controller';
 import bannerController from '../controllers/banner.controller';
+import cartController from '../controllers/cart.controller';
 
 
 const router = express.Router();
@@ -564,6 +565,69 @@ router.delete("/banner/:id", [authMiddleware, aclMiddleware(["admin"])], bannerC
       }]
     */
 );
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+router.post("/cart", [authMiddleware], cartController.create
+    /*
+      #swagger.tags = ["Cart"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+      #swagger.requestBody = {
+        requied: true,
+        content: {
+          "application/json" : {
+            schema : {
+              $ref: "#/components/schemas/CartRequest"
+            }
+          }
+        }
+      }
+    */
+);
+
+router.get("/cart", [authMiddleware], cartController.findAll
+    /*
+      #swagger.tags = ["Cart"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+);
+
+router.get("/cart/:id", [authMiddleware], cartController.findById
+    /*
+      #swagger.tags = ["Cart"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+);
+
+router.delete("/cart/:id", [authMiddleware], cartController.delete
+    /*
+      #swagger.tags = ["Cart"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+);
+
+
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

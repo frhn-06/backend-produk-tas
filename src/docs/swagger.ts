@@ -82,6 +82,9 @@ const doc = {
                 name: "name",
                 image: ".jpg",
                 description: "description"
+            },
+            CartRequest : {
+                productId: ":id"
             }
         }
     }
