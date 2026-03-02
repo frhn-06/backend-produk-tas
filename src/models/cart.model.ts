@@ -13,9 +13,6 @@ export type ICart = yup.InferType<typeof cartDTO>;
 export interface Cart extends Omit<ICart, "productId"> {
     productId: ObjectId;
     userId: ObjectId;
-    name: string;
-    image: string;
-    price: number;
     quantity: number
 };
 
@@ -28,18 +25,6 @@ const cartSchema = new schema<Cart>({
     userId: {
         type: schema.Types.ObjectId,
         ref: "User",
-        required: true
-    },
-    name: {
-        type: schema.Types.String,
-        required: true
-    },
-    image: {
-        type: schema.Types.String,
-        required: true
-    },
-    price: {
-        type: schema.Types.Number,
         required: true
     },
     quantity: {

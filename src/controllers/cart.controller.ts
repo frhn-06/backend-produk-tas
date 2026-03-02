@@ -12,27 +12,29 @@ const cartController = {
 
             if(!isValidObjectId(validate.productId)) return response.notFound(res, "product not found");
 
-            const validatedProduct = await ProductModel.findById(validate.productId);
+            const product = await ProductModel.findById(validate.productId);
 
-            if(!validatedProduct) return response.notFound(res, "product not found");
+            if(!product) return response.notFound(res, "product not found");
 
-            const cartSudah = await CartModel.findOne({
-                productId: validate.productId
+            if(product.quantity <= 0) return response.error(res, null, "product is empty");
+
+            const cartSudahAda = await CartModel.findOne({
+                productId: validate.productId,
+                userId: req.user?.id
             });
 
-            if(cartSudah) {
-                cartSudah.quantity += 1;
-                await cartSudah.save();
+            if(cartSudahAda) {
+                if(cartSudahAda.quantity + 1 > product.quantity) return response.error(res, null, "product is empty");
+                
+                cartSudahAda.quantity += 1;
+                await cartSudahAda.save();
 
-                return response.success(res, cartSudah, "success to create cart");
+                return response.success(res, cartSudahAda, "success to create cart");
             }
 
             const payload = {
                 ...validate,
                 userId: req.user?.id,
-                name: validatedProduct.name,
-                price: validatedProduct.price,
-                image: validatedProduct.image,
                 quantity: 1
             }
 
@@ -59,9 +61,9 @@ const cartController = {
 
             const query = buildQuery(search);
 
-            const result = await CartModel.find({userId: req.user?.id, ...query}).sort({updateAt: -1}).exec();
+            const result = await CartModel.find({userId: req.user?.id, ...query}).populate('productId', 'name price image').sort({updatedAt: -1}).exec();
 
-            const total = await CartModel.countDocuments();
+            const total = await CartModel.countDocuments({userId: req.user?.id, ...query});
 
             response.pagination(res, result, {current: 1, total: +total, totalPage: 1}, "success to find all cart");
         }catch(error) {
