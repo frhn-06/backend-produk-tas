@@ -61,7 +61,7 @@ const cartController = {
 
             const query = buildQuery(search);
 
-            const result = await CartModel.find({userId: req.user?.id, ...query}).populate('productId', 'name price image').sort({updatedAt: -1}).exec();
+            const result = await CartModel.find({userId: req.user?.id, ...query}).populate('productId', 'name price image').sort({createdAt: -1}).exec();
 
             const total = await CartModel.countDocuments({userId: req.user?.id, ...query});
 
