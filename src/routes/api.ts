@@ -617,6 +617,24 @@ router.get("/cart/:id", [authMiddleware], cartController.findById
     */
 );
 
+router.put("/cart/:id/plus", [authMiddleware], cartController.plus
+    /*
+      #swagger.tags = ["Cart"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+);
+
+router.put("/cart/:id/min", [authMiddleware], cartController.min
+    /*
+      #swagger.tags = ["Cart"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+);
+
 router.delete("/cart/:id", [authMiddleware], cartController.delete
     /*
       #swagger.tags = ["Cart"]

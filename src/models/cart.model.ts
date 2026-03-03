@@ -39,6 +39,8 @@ cartSchema.index({
     name: "text"
 }) 
 
+cartSchema.index({userId: 1, productId: 1}, {unique: true})
+
 const CartModel = mongoose.model("Cart", cartSchema);
 
 export default CartModel;
