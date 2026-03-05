@@ -50,6 +50,7 @@ export interface IUser extends Omit<TypeUserForm, "confirmPassword"> {
     role: string;
     profilePicture: string;
     createdAt?: string;
+    phone: string;
     address: string;
     coordinate: number[]
 }
@@ -63,11 +64,13 @@ const userSchema = new schema<IUser>({
     },
     userName: {
         type: schema.Types.String,
-        required: true
+        required: true,
+        unique: true
     },
     email: {
         type: schema.Types.String,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: schema.Types.String,
@@ -88,6 +91,10 @@ const userSchema = new schema<IUser>({
     profilePicture: {
         type: schema.Types.String,
         default: "user.jpg"
+    },
+    phone: {
+        type: schema.Types.String,
+        default: ""
     },
     address: {
         type: schema.Types.String,
