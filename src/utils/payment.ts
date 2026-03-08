@@ -5,7 +5,7 @@ import { MIDTRANS_CLIENT_KEY, MIDTRANS_SERVER_KEY, MIDTRANS_TRANSACTION_URL } fr
 export interface Payment {
     transaction_details: {
         order_id: string;
-        gress_amount: number;
+        gross_amount: number;
     }
 }
 

@@ -48,11 +48,11 @@ export default {
         const {id} = req.params;
         
         try {
-            if(!isValidObjectId(id)) response.notFound(res, "category is not found");
+            if(!isValidObjectId(id)) return response.notFound(res, "category is not found");
 
             const result = await CategoryModel.findById(id);
 
-            if(!result) response.notFound(res, "category is not found");
+            if(!result) return response.notFound(res, "category is not found");
 
             response.success(res, result, "success to find a category");
         } catch(error) {
@@ -64,11 +64,11 @@ export default {
         const {id} = req.params;
 
         try {
-            if(!isValidObjectId(id)) response.notFound(res, "category not found")
+            if(!isValidObjectId(id)) return response.notFound(res, "category not found")
 
             const result = await CategoryModel.findByIdAndUpdate(id, req.body, {new: true});
 
-            if(!result) response.notFound(res, "category is not found");
+            if(!result) return response.notFound(res, "category is not found");
 
             response.success(res, result, "success to update category");
 
@@ -81,11 +81,11 @@ export default {
         const {id} = req.params;
 
         try {
-            if(!isValidObjectId(id)) response.notFound(res, "category not found")
+            if(!isValidObjectId(id)) return response.notFound(res, "category not found")
 
             const result = await CategoryModel.findByIdAndDelete(id);
 
-            if(!result) response.notFound(res, "category is not found");
+            if(!result) return response.notFound(res, "category is not found");
 
             response.success(res, result, "success to remove category");
 

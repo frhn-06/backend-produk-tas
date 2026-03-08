@@ -85,6 +85,16 @@ const doc = {
             },
             CartRequest : {
                 productId: ":id"
+            },
+            OrderRequest : {
+                products: [
+                    {
+                        productId: ":id",
+                        name: "product name",
+                        price: 50,
+                        quantity: 1
+                    }
+                ]
             }
         }
     }

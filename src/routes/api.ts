@@ -1,4 +1,4 @@
-import express from 'express'
+import {Router} from 'express'
 
 import dummyController from '../controllers/dummy.controller';
 import authController from '../controllers/auth.controller';
@@ -12,9 +12,10 @@ import ReviewController from '../controllers/review.controller';
 import activityController from '../controllers/activity.controller';
 import bannerController from '../controllers/banner.controller';
 import cartController from '../controllers/cart.controller';
+import orderController from '../controllers/order.controller';
 
+const router = Router();
 
-const router = express.Router();
 
 router.get('/dummy', dummyController.dummy)
 
@@ -645,6 +646,72 @@ router.delete("/cart/:id", [authMiddleware], cartController.delete
 );
 
 
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+router.post("/orders",[authMiddleware], orderController.create
+    /**
+      #swagger.tags = ["Orders"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+      #swagger.requestBody = {
+        requied: true,
+        content: {
+          "application/json" : {
+            schema : {
+              $ref: "#/components/schemas/OrderRequest"
+            }
+          }
+        }
+      }
+    */
+);
+
+router.post("/payment/webhook", orderController.webhook
+    /*
+      #swagger.tags = ["Orders"]
+    */
+);
+
+router.get("/orders", [authMiddleware, aclMiddleware(["member"])], orderController.findAll
+    /*
+      #swagger.tags = ["Orders"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+);
+
+router.get("/orders/:id", [authMiddleware], orderController.findById
+    /*
+      #swagger.tags = ["Orders"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+);
+
+router.get("/my-orders", [authMiddleware], orderController.findByUser
+    /*
+      #swagger.tags = ["Orders"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+);
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
