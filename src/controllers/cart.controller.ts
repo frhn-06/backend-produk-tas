@@ -160,6 +160,16 @@ const cartController = {
             response.error(res, error, "failed to delete cart");
         }
     },
+
+    async deleteAll(req: IReqUser, res: Response) {
+        try{
+            const result = await CartModel.deleteMany({userId: req.user?.id});
+
+            response.success(res, result, "success to delete all carts")
+        } catch(error) {
+            response.error(res, error, "failed to delete carts");
+        }
+    }
 }
 
 export default cartController;
