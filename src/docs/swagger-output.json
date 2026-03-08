@@ -1216,6 +1216,16 @@
         ]
       }
     },
+    "/delete-all-carts": {
+      "delete": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/orders": {
       "post": {
         "tags": [

@@ -13,6 +13,7 @@ import activityController from '../controllers/activity.controller';
 import bannerController from '../controllers/banner.controller';
 import cartController from '../controllers/cart.controller';
 import orderController from '../controllers/order.controller';
+import { runInContext } from 'vm';
 
 const router = Router();
 
@@ -644,6 +645,9 @@ router.delete("/cart/:id", [authMiddleware], cartController.delete
       }]
     */
 );
+
+
+router.delete("/delete-all-carts", [authMiddleware], cartController.deleteAll);
 
 
 
