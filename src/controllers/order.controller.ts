@@ -175,7 +175,13 @@ const orderController = {
             let status = "pending";
 
             if (transaction_status === "settlement") {
-                status = "settlement"
+                status = "settlement";
+
+                for(const p of order.products) {
+                    await ProductModel.findByIdAndUpdate(p.productId, {
+                        $inc: {quantity: -p.quantity}
+                    })
+                }
             }
 
             if (transaction_status === "cancel") {
