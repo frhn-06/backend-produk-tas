@@ -697,7 +697,7 @@ router.post("/payment/webhook", orderController.webhook
     */
 );
 
-router.get("/orders", [authMiddleware, aclMiddleware(["member"])], orderController.findAll
+router.get("/orders", [authMiddleware, aclMiddleware(["admin"])], orderController.findAll
     /*
       #swagger.tags = ["Orders"]
       #swagger.security = [{
