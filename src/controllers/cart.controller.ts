@@ -151,7 +151,7 @@ const cartController = {
             if(!isValidObjectId(id)) return response.notFound(res, "cart is not found");
 
             const result = await CartModel.findOneAndDelete({
-                productId: id,
+                _id: id,
                 userId: req.user?.id
             });
 

@@ -647,7 +647,14 @@ router.delete("/cart/:id", [authMiddleware], cartController.delete
 );
 
 
-router.delete("/delete-all-carts", [authMiddleware], cartController.deleteAll);
+router.delete("/delete-all-carts", [authMiddleware], cartController.deleteAll
+    /*
+      #swagger.tags = ["Cart"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+);
 
 
 
