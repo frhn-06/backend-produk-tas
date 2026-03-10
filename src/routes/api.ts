@@ -80,6 +80,15 @@ router.get("/auth/me", authMiddleware, authController.me
     */
 );
 
+router.get("/auth/:id/user", authMiddleware, authController.user
+    /*
+      #swagger.tags = ['Auth']
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+)
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -4,6 +4,7 @@ import UserModel, { ILogin, LoginDTO, TypeUserForm, UserDTO } from "../models/us
 import { encrypt } from "../utils/encryption";
 import { signIn } from "../utils/jwt";
 import { IReqUser } from "../utils/interface";
+import { isValidObjectId } from "mongoose";
 
 
 export default {
@@ -106,6 +107,20 @@ export default {
 
         } catch (error) {
             return response.error(res, null, "failed to get me");
+        }
+    },
+
+    async user(req: IReqUser, res: Response) {
+        try {
+            const {id} = req.params;
+            
+            if(!isValidObjectId(id)) return response.notFound(res, "user not found");
+
+            const result = await UserModel.findById(id);
+
+            response.success(res, result, "success to get user");
+        } catch(error) {
+            return response.error(res, null, "failed to get user");
         }
     }
 }

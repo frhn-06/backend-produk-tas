@@ -113,6 +113,34 @@
         ]
       }
     },
+    "/auth/{id}/user": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/review": {
       "post": {
         "tags": [
@@ -1218,12 +1246,20 @@
     },
     "/delete-all-carts": {
       "delete": {
+        "tags": [
+          "Cart"
+        ],
         "description": "",
         "responses": {
           "default": {
             "description": ""
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/orders": {
