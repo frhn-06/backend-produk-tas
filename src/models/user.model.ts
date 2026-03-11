@@ -29,6 +29,22 @@ export const UserDTO = yup.object({
 });
 
 
+export const UpdateProfileDTO = yup.object({
+    fullName: yup.string().required(),
+    userName: yup.string().required(),
+    profilePicture: yup.string(),
+    phone: yup.string(),
+    address: yup.string(),
+    coordinate: yup.array().of(yup.number()).length(2),
+})
+
+
+export const UpdatePasswordDTO = yup.object({
+    oldPassword: password,
+    password: password,
+    confirmPassword: confirmPassword
+});
+
 
 export type ILogin = {
     identifier: string;
@@ -43,7 +59,6 @@ export const LoginDTO = yup.object({
 
 export type TypeUserForm = yup.InferType<typeof UserDTO>;
 
-
 export interface IUser extends Omit<TypeUserForm, "confirmPassword"> {
     isActive: boolean;
     activationCode: string;
@@ -54,6 +69,8 @@ export interface IUser extends Omit<TypeUserForm, "confirmPassword"> {
     address: string;
     coordinate: number[]
 }
+ 
+
 
 const schema = mongoose.Schema;
 

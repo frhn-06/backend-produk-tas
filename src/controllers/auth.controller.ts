@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import response from '../utils/response'
-import UserModel, { ILogin, LoginDTO, TypeUserForm, UserDTO } from "../models/user.model"
+import UserModel, { ILogin, LoginDTO, UpdatePasswordDTO, UpdateProfileDTO, UserDTO } from "../models/user.model"
 import { encrypt } from "../utils/encryption";
 import { signIn } from "../utils/jwt";
 import { IReqUser } from "../utils/interface";
@@ -121,6 +121,58 @@ export default {
             response.success(res, result, "success to get user");
         } catch(error) {
             return response.error(res, null, "failed to get user");
+        }
+    },
+
+    async updateProfile(req: IReqUser, res: Response) {
+        try {
+            const payload = await UpdateProfileDTO.validate(req.body);
+
+            const data = await UserModel.findByIdAndUpdate(req.user?.id, {
+                $set: payload
+            }, {
+                new: true
+            });
+
+            if(!data) return response.error(res, null, "failed to update profile");
+
+            response.success(res, data, "success to update profile");
+        } catch(error) {
+            return response.error(res, null, "failed to update profile");
+        }
+    },
+
+    async updatePassword(req: IReqUser, res: Response) {
+        try {
+            const payload = await UpdatePasswordDTO.validate({
+                oldPassword: req.body.oldPassword,
+                password: req.body.password,
+                confirmPassword: req.body.confirmPassword
+            });
+
+            const user = await UserModel.findById(req.user?.id);
+            
+            if(!user) return response.notFound(res, "user not found");
+
+            if(encrypt(payload.oldPassword) !== user.password) return response.error(res, null, "password is wrong");
+
+            const passwordSame = payload.password === payload.confirmPassword;
+            
+            if(!passwordSame) return response.error(res, null, "confirm passwordis wrong");
+
+            const data = await UserModel.findByIdAndUpdate(req.user?.id, {
+                $set: {
+                    password: encrypt(payload.password)
+                }
+            }, {
+                new: true
+            });
+
+            if(!data) return response.error(res, null, "failed to update password");
+
+            response.success(res, data, "success to update password");
+        } catch(error) {
+            return response.error(res, null, "failed to update password");
         }
     }
 }

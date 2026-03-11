@@ -90,6 +90,13 @@ router.get("/auth/:id/user", authMiddleware, authController.user
 )
 
 
+router.put("/auth/update-profile", authMiddleware, authController.updateProfile);
+
+router.put("/auth/update-password", authMiddleware, authController.updatePassword);
+
+
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
