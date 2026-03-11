@@ -141,6 +141,62 @@
         ]
       }
     },
+    "/auth/update-profile": {
+      "put": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProfileRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/update-password": {
+      "put": {
+        "tags": [
+          "Auth"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePasswordRequest"
+              }
+            }
+          }
+        }
+      }
+    },
     "/review": {
       "post": {
         "tags": [
@@ -1677,6 +1733,58 @@
                 }
               }
             }
+          }
+        }
+      },
+      "UpdateProfileRequest": {
+        "type": "object",
+        "properties": {
+          "userName": {
+            "type": "string",
+            "example": "name"
+          },
+          "fullName": {
+            "type": "string",
+            "example": "fullname"
+          },
+          "profilePicture": {
+            "type": "string",
+            "example": ".jpg"
+          },
+          "phone": {
+            "type": "string",
+            "example": "0857..."
+          },
+          "address": {
+            "type": "string",
+            "example": "address"
+          },
+          "coordinate": {
+            "type": "array",
+            "example": [
+              0,
+              0
+            ],
+            "items": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "UpdatePasswordRequest": {
+        "type": "object",
+        "properties": {
+          "oldPassword": {
+            "type": "string",
+            "example": "oldpassword"
+          },
+          "password": {
+            "type": "string",
+            "example": "password"
+          },
+          "confirmPassword": {
+            "type": "string",
+            "example": "confirmpassword"
           }
         }
       }

@@ -1,4 +1,5 @@
 import swaggerAutogen from "swagger-autogen";
+import { UpdatePasswordDTO } from "../models/user.model";
 
 
 const doc = {
@@ -95,6 +96,19 @@ const doc = {
                         quantity: 1
                     }
                 ]
+            },
+            UpdateProfileRequest : {
+                userName: "name",
+                fullName: "fullname",
+                profilePicture: ".jpg",
+                phone: "0857...",
+                address: "address",
+                coordinate: [0, 0]
+            },
+            UpdatePasswordRequest : {
+                oldPassword: "oldpassword",
+                password: "password",
+                confirmPassword: "confirmpassword"
             }
         }
     }

@@ -90,9 +90,43 @@ router.get("/auth/:id/user", authMiddleware, authController.user
 )
 
 
-router.put("/auth/update-profile", authMiddleware, authController.updateProfile);
+router.put("/auth/update-profile", authMiddleware, authController.updateProfile
+    /*
+      #swagger.tags = ['Auth']
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+      #swagger.requestBody = {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/components/schemas/UpdateProfileRequest"
+            }
+          }
+        }
+      } 
+    */
+);
 
-router.put("/auth/update-password", authMiddleware, authController.updatePassword);
+router.put("/auth/update-password", authMiddleware, authController.updatePassword
+    /*
+      #swagger.tags = ['Auth']
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+      #swagger.requestBody = {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/components/schemas/UpdatePasswordRequest"
+            }
+          }
+        }
+      } 
+    */
+);
 
 
 
