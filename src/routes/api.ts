@@ -14,6 +14,7 @@ import bannerController from '../controllers/banner.controller';
 import cartController from '../controllers/cart.controller';
 import orderController from '../controllers/order.controller';
 import { runInContext } from 'vm';
+import dashboardController from '../controllers/dashboard.controller';
 
 const router = Router();
 
@@ -773,6 +774,34 @@ router.get("/my-orders", [authMiddleware], orderController.findByUser
       }]
     */
 );
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+router.get("/dashboard-admin", [authMiddleware, aclMiddleware(["admin"])], dashboardController.dashboardAdmin
+    /*
+      #swagger.tags = ["Dashboard"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+)
+
+router.get("/dashboard-member", [authMiddleware], dashboardController.dashboardMember
+    /*
+      #swagger.tags = ["Dashboard"]
+      #swagger.security = [{
+        "bearerAuth" : []
+      }]
+    */
+)
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
