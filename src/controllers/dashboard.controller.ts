@@ -136,6 +136,8 @@ const dashboardController = {
 
             const totalCarts = await CartModel.countDocuments({userId: req.user?.id});
 
+            const lastOrder = await OrderModel.findOne({userId: req.user?.id, status: "settlement"}).populate("products.productId", "image").exec();
+
             response.success(res, {
                 totalOrders,
                 successOrders,
@@ -143,7 +145,8 @@ const dashboardController = {
                 recentSuccessOrder,
                 recentPendidngOrder,
                 carts,
-                totalCarts
+                totalCarts,
+                lastOrder
             }, "success to get data dashboard");
         } catch(error) {
             response.error(res, error, "failed to get data dashboard member")
