@@ -47,9 +47,15 @@ const dashboardController = {
                 }
             ]);
 
+            const oneYearAgo = new Date();
+            oneYearAgo.setMonth(oneYearAgo.getMonth() - 12);
+
             const revenuePerMounth = await OrderModel.aggregate([
                 {
-                    $match: {status: "settlement"}
+                    $match: {
+                        status: "settlement",
+                        createdAt: {$gte: oneYearAgo}
+                    }
                 },
                 {
                     $group: {
