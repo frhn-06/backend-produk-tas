@@ -47,6 +47,30 @@ const dashboardController = {
                 }
             ]);
 
+            const revenuePerMounth = await OrderModel.aggregate([
+                {
+                    $match: {status: "settlement"}
+                },
+                {
+                    $group: {
+                        _id: {$month: "$createdAt"},
+                        revenue: {$sum: "$total"}
+                    }
+                },
+                {
+                    $sort: {_id: 1}
+                }
+            ])
+
+            const montNames = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+
+            const chartData = revenuePerMounth.map(item => { 
+                return {
+                    month: montNames[item._id - 1],
+                    revenue: item.revenue 
+                }        
+            })
+
             response.success(res, {
                 totalProducts,
                 totalOrders,
@@ -55,7 +79,8 @@ const dashboardController = {
                 pendingOrders,
                 SuccessOrders,
                 recentPendidngOrder,
-                recentSuccessOrder
+                recentSuccessOrder,
+                revenueChart: chartData
             }, "success to get dashboard");
             
         } catch(error) {
