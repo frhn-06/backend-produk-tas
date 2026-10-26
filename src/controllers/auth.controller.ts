@@ -57,7 +57,6 @@ export default {
         try {
             const {identifier, password} = req.body as ILogin;
 
-            // console.log({identifier, password});
 
             await LoginDTO.validate({identifier, password});
 
