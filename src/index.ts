@@ -122,8 +122,8 @@ export default async function handler(
 if (process.env.NODE_ENV !== "production") {
     ensureDatabase()
         .then(() => {
-            app.listen(3000, () => {
-                console.log("Server berjalan di port 3000");
+            app.listen(5000, () => {
+                console.log("Server berjalan di port 5000");
             });
         })
         .catch((error) => {
