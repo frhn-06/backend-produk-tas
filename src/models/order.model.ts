@@ -2,6 +2,7 @@ import * as yup from 'yup';
 import mongoose, { ObjectId } from 'mongoose';
 import payment, { TyperesponseMidtrans } from '../utils/payment';
 import { nanoid } from 'nanoid';
+import { CLIENT_HOST } from '../utils/env';
 
 
 export const orderDTO = yup.object({
@@ -142,6 +143,9 @@ orderSchema.pre("save", async function() {
         transaction_details: {
             order_id: order.orderId,
             gross_amount: order.total
+        },
+        callbacks: {
+            finish: `${CLIENT_HOST}/api/order/finish`,
         }
     });
 });

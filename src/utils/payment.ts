@@ -6,6 +6,9 @@ export interface Payment {
     transaction_details: {
         order_id: string;
         gross_amount: number;
+    },
+    callbacks: {
+        finish: string;
     }
 }
 
