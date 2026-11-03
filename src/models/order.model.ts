@@ -145,7 +145,7 @@ orderSchema.pre("save", async function() {
             gross_amount: order.total
         },
         callbacks: {
-            finish: `${CLIENT_HOST}/api/order/finish`,
+            finish: `${CLIENT_HOST}/order/finish`,
         }
     });
 });

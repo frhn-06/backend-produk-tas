@@ -29,6 +29,9 @@ const payment = {
             }
         })
 
+        console.log("FINISH CALLBACK:", payload.callbacks?.finish);
+        console.log("MIDTRANS REDIRECT:", result.data.redirect_url);
+
         if(result.status !== 201) {
             throw new Error("payment failed")
         }
