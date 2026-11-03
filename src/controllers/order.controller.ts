@@ -5,6 +5,7 @@ import OrderModel, { IOrder, IProductsForm, Order, orderDTO, orderStatus } from 
 import { FilterQuery, isValidObjectId } from "mongoose";
 import ProductModel from "../models/product.model";
 import UserModel from "../models/user.model";
+import { getStatus } from "../utils/payment";
 
 const orderController = {
     async create(req: IReqUser, res: Response) {
@@ -244,19 +245,37 @@ const orderController = {
     },
 
 
-    // async finish(req: IReqUser, res: Response) {
-    //     try {
-    //        const {orderId} = req.params;
+    async finish(req: IReqUser, res: Response) {
+        try {
+           const {orderId} = req.params;
 
-    //        const order = await OrderModel.findOne({orderId: orderId});
+           let order = await OrderModel.findOne({orderId: orderId});
 
-    //        if(!order) return response.notFound(res, "order not found");
+           if(!order) return response.notFound(res, "order not found");
 
-           
-    //     }catch (error) {
-    //         response.error(res, error, "failed to finish order");
-    //     }
-    // }
+            const transactionStatus = await getStatus(orderId);
+
+            switch(transactionStatus) {
+                case "settlement":
+                    order.status = orderStatus.COMPLETED;
+                    break;
+                case "cancel":
+                    order.status = orderStatus.CANCELLED;
+                    break;
+                case "expire":
+                    order.status = orderStatus.EXPIRE;
+                    break;
+                default:
+                    return response.success(res, {transactionStatus}, "order is still pending");
+            }
+ 
+           await order.save();
+
+           response.success(res, {transactionStatus, order}, "success to finish order");
+        }catch (error) {
+            response.error(res, error, "failed to finish order");
+        }
+    }
 }
 
 

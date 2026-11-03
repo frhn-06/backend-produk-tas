@@ -43,7 +43,7 @@ const payment = {
 
 
 const getStatus = async (orderId: string) => {
-    const result = await axios.get(`${MIDTRANS_TRANSACTION_URL}/${orderId}/status`, {
+    const result = await axios.get(`${MIDTRANS_TRANSACTION_URL}/${orderId}`, {
         headers: {
             "Content-Type" : "application/json",
             Accept: "application/json",
@@ -51,6 +51,10 @@ const getStatus = async (orderId: string) => {
         }
     })
 
-}
+    const midtrans = result.data;
+    const transactionStatus = midtrans.transaction_status;
+    return transactionStatus;
+}   
 
+export {getStatus};
 export default payment;
