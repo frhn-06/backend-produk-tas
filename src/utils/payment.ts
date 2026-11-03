@@ -31,6 +31,7 @@ const payment = {
 
         console.log("FINISH CALLBACK:", payload.callbacks?.finish);
         console.log("MIDTRANS REDIRECT:", result.data.redirect_url);
+        console.log("result:", result.data);
 
         if(result.status !== 201) {
             throw new Error("payment failed")
@@ -38,6 +39,18 @@ const payment = {
 
         return result?.data;
     } 
+}
+
+
+const getStatus = async (orderId: string) => {
+    const result = await axios.get(`${MIDTRANS_TRANSACTION_URL}/${orderId}/status`, {
+        headers: {
+            "Content-Type" : "application/json",
+            Accept: "application/json",
+            Authorization: `Basic ${Buffer.from(`${MIDTRANS_SERVER_KEY}:`).toString("base64")}`
+        }
+    })
+
 }
 
 export default payment;

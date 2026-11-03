@@ -241,7 +241,22 @@ const orderController = {
         } catch (error) {
             response.error(res, error, "failed to cancel order");
         }
-    }
+    },
+
+
+    // async finish(req: IReqUser, res: Response) {
+    //     try {
+    //        const {orderId} = req.params;
+
+    //        const order = await OrderModel.findOne({orderId: orderId});
+
+    //        if(!order) return response.notFound(res, "order not found");
+
+           
+    //     }catch (error) {
+    //         response.error(res, error, "failed to finish order");
+    //     }
+    // }
 }
 
 
