@@ -291,6 +291,8 @@ const orderController = {
                 transaction_status,
                 fraud_status
             } = req.body;
+
+            console.log("WEBHOOK RECEIVED:", req.body);
             
             if(!order_id || !status_code || !gross_amount || !signature_key || !transaction_status || !fraud_status) {
                 return response.error(res, false, "invalid webhook payload");
@@ -300,15 +302,23 @@ const orderController = {
                 .update(`${order_id}${status_code}${gross_amount}${MIDTRANS_SERVER_KEY}`)
                 .digest("hex");
 
-            const signatureBuffer = Buffer.from(signature);
-            const receivedSignatureBuffer = Buffer.from(signature_key)
+            console.log("SIGNATURE:", signature);
 
-            if(signatureBuffer.length !== receivedSignatureBuffer.length || !timingSafeEqual(signatureBuffer, receivedSignatureBuffer)) {
+            const signatureBuffer = Buffer.from(signature);
+            console.log("SIGNATURE BUFFER:", signatureBuffer);
+            const receivedSignatureBuffer = Buffer.from(signature_key);
+            console.log("RECEIVED SIGNATURE BUFFER:", receivedSignatureBuffer);
+
+            if(
+                signatureBuffer.length !== receivedSignatureBuffer.length || 
+                !timingSafeEqual(signatureBuffer, receivedSignatureBuffer)
+            ) {
                 return response.error(res, false, "Invalide signature")
             }
 
 
             const order = await OrderModel.findOne({orderId: order_id});
+            console.log("ORDER FOUND:", order);
             if(!order) return response.notFound(res, "Order not found")
 
 
@@ -341,6 +351,7 @@ const orderController = {
                 await order.save();
             }
 
+            console.log("ORDER UPDATED:", order);
             response.success(res, true, "webhook processed successfully")
         } catch (error) {
             response.error(res, error, "failed to process webhook");
