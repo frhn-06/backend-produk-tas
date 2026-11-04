@@ -313,7 +313,8 @@ const orderController = {
                 signatureBuffer.length !== receivedSignatureBuffer.length || 
                 !timingSafeEqual(signatureBuffer, receivedSignatureBuffer)
             ) {
-                return response.error(res, false, "Invalide signature")
+                console.log("INVALID SIGNATURE");
+                return response.error(res, false, "Invalid signature")
             }
 
 
@@ -323,6 +324,9 @@ const orderController = {
 
 
             let newStatus;
+
+            console.log("TRANSACTION STATUS:", transaction_status);
+            console.log("NEW STATUS:", newStatus);
 
             switch (transaction_status) {
                 case "settlement" :
@@ -345,6 +349,9 @@ const orderController = {
                 default :
                     return response.success(res, true, "notification received, status not hendled");
             }
+
+            console.log("NEW STATUS UPDATED:", newStatus);
+            
 
             if(newStatus && order.status !== newStatus) {
                 order.status = newStatus;
