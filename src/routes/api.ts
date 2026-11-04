@@ -742,12 +742,6 @@ router.post("/orders",[authMiddleware], orderController.create
     */
 );
 
-router.post("/payment/webhook", orderController.webhook
-    /*
-      #swagger.tags = ["Orders"]
-    */
-);
-
 router.get("/orders", [authMiddleware, aclMiddleware(["admin"])], orderController.findAll
     /*
       #swagger.tags = ["Orders"]
@@ -775,6 +769,13 @@ router.get("/my-orders", [authMiddleware], orderController.findByUser
     */
 );
 
+
+
+
+router.get("/orders/:orderId/finish", [authMiddleware], orderController.finish)
+
+
+router.post("/payment/webhook", orderController.webhook);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

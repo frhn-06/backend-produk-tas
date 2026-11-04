@@ -1,11 +1,13 @@
 import response from "../utils/response";
 import { IReqUser } from "../utils/interface";
 import { Request, Response } from "express";
-import OrderModel, { IOrder, IProductsForm, Order, orderDTO, orderStatus } from "../models/order.model";
+import OrderModel, { IProductsForm, Order, orderDTO, orderStatus } from "../models/order.model";
 import { FilterQuery, isValidObjectId } from "mongoose";
 import ProductModel from "../models/product.model";
 import UserModel from "../models/user.model";
 import { getStatus } from "../utils/payment";
+import cyrpto, { createHash, timingSafeEqual } from "crypto";
+import { MIDTRANS_SERVER_KEY } from "../utils/env";
 
 const orderController = {
     async create(req: IReqUser, res: Response) {
@@ -144,105 +146,105 @@ const orderController = {
         }
     },
 
-    async remove(req: IReqUser, res: Response) {
-        const { id } = req.params;
+    // async remove(req: IReqUser, res: Response) {
+    //     const { id } = req.params;
 
-        try {
-            if (!isValidObjectId(id)) return response.notFound(res, "order not found")
+    //     try {
+    //         if (!isValidObjectId(id)) return response.notFound(res, "order not found")
 
-            const result = await OrderModel.findByIdAndDelete(id);
+    //         const result = await OrderModel.findByIdAndDelete(id);
 
-            if (!result) return response.notFound(res, "order is not found");
+    //         if (!result) return response.notFound(res, "order is not found");
 
-            response.success(res, result, "success to remove order");
+    //         response.success(res, result, "success to remove order");
 
-        } catch (error) {
-            response.error(res, error, "failed to remove order");
-        }
-    },
+    //     } catch (error) {
+    //         response.error(res, error, "failed to remove order");
+    //     }
+    // },
 
-    async webhook(req: Request, res: Response) {
-        try {
-            console.log(req.body);
+    // async webhook(req: Request, res: Response) {
+    //     try {
+    //         console.log(req.body);
 
-            const { order_id, transaction_status } = req.body as any;
+    //         const { order_id, transaction_status } = req.body as any;
 
-            const order = await OrderModel.findOne({ orderId: order_id });
+    //         const order = await OrderModel.findOne({ orderId: order_id });
 
-            if (!order) {
-                return response.notFound(res, "order not found");
-            }
+    //         if (!order) {
+    //             return response.notFound(res, "order not found");
+    //         }
 
-            let status = "pending";
+    //         let status = "pending";
 
-            if (transaction_status === "settlement") {
-                status = "settlement";
+    //         if (transaction_status === "settlement") {
+    //             status = "settlement";
 
-                for(const p of order.products) {
-                    await ProductModel.findByIdAndUpdate(p.productId, {
-                        $inc: {quantity: -p.quantity}
-                    })
-                }
-            }
+    //             for(const p of order.products) {
+    //                 await ProductModel.findByIdAndUpdate(p.productId, {
+    //                     $inc: {quantity: -p.quantity}
+    //                 })
+    //             }
+    //         }
 
-            if (transaction_status === "cancel") {
-                status = "cancelled"
-            }
+    //         if (transaction_status === "cancel") {
+    //             status = "cancelled"
+    //         }
 
-            if (transaction_status === "expire") {
-                status = "expired";
-            }
+    //         if (transaction_status === "expire") {
+    //             status = "expired";
+    //         }
 
-            await OrderModel.findOneAndUpdate({orderId: order_id}, {
-                status: status
-            }, {new: true})
+    //         await OrderModel.findOneAndUpdate({orderId: order_id}, {
+    //             status: status
+    //         }, {new: true})
 
-            response.success(res, null, "webhook received");
+    //         response.success(res, null, "webhook received");
 
-        } catch (error) {
-            response.error(res, error, "webhook error");
-        }
-    },
+    //     } catch (error) {
+    //         response.error(res, error, "webhook error");
+    //     }
+    // },
 
-    async completed(req: IReqUser, res: Response) {
-        const { id } = req.params;
+    // async completed(req: IReqUser, res: Response) {
+    //     const { id } = req.params;
 
-        try {
-            if (!isValidObjectId(id)) return response.notFound(res, "order not found")
+    //     try {
+    //         if (!isValidObjectId(id)) return response.notFound(res, "order not found")
 
-            const result = await OrderModel.findByIdAndUpdate(id, {
-                status: orderStatus.COMPLETED
-            }, {
-                new: true
-            });
+    //         const result = await OrderModel.findByIdAndUpdate(id, {
+    //             status: orderStatus.COMPLETED
+    //         }, {
+    //             new: true
+    //         });
 
-            if (!result) return response.notFound(res, "order is not found");
+    //         if (!result) return response.notFound(res, "order is not found");
 
-            response.success(res, result, "success to completed order");
-        } catch (error) {
-            response.error(res, error, "failed to completed order");
-        }
-    },
+    //         response.success(res, result, "success to completed order");
+    //     } catch (error) {
+    //         response.error(res, error, "failed to completed order");
+    //     }
+    // },
 
-    async cancelled(req: IReqUser, res: Response) {
-        const { id } = req.params;
+    // async cancelled(req: IReqUser, res: Response) {
+    //     const { id } = req.params;
 
-        try {
-            if (!isValidObjectId(id)) return response.notFound(res, "order not found")
+    //     try {
+    //         if (!isValidObjectId(id)) return response.notFound(res, "order not found")
 
-            const result = await OrderModel.findByIdAndUpdate(id, {
-                status: orderStatus.CANCELLED
-            }, {
-                new: true
-            });
+    //         const result = await OrderModel.findByIdAndUpdate(id, {
+    //             status: orderStatus.CANCELLED
+    //         }, {
+    //             new: true
+    //         });
 
-            if (!result) return response.notFound(res, "order is not found");
+    //         if (!result) return response.notFound(res, "order is not found");
 
-            response.success(res, result, "success to cancel order");
-        } catch (error) {
-            response.error(res, error, "failed to cancel order");
-        }
-    },
+    //         response.success(res, result, "success to cancel order");
+    //     } catch (error) {
+    //         response.error(res, error, "failed to cancel order");
+    //     }
+    // },
 
 
     async finish(req: IReqUser, res: Response) {
@@ -274,6 +276,74 @@ const orderController = {
            response.success(res, {transactionStatus, order}, "success to finish order");
         }catch (error) {
             response.error(res, error, "failed to finish order");
+        }
+    },
+
+
+
+    async webhook(req: Request, res: Response) {
+        try {
+            const {
+                order_id,
+                status_code,
+                gross_amount,
+                signature_key,
+                transaction_status,
+                fraud_status
+            } = req.body;
+            
+            if(!order_id || !status_code || !gross_amount || !signature_key || !transaction_status || !fraud_status) {
+                return response.error(res, false, "invalid webhook payload");
+            }
+
+            const signature = createHash("sha512")
+                .update(`${order_id}${status_code}${gross_amount}${MIDTRANS_SERVER_KEY}`)
+                .digest("hex");
+
+            const signatureBuffer = Buffer.from(signature);
+            const receivedSignatureBuffer = Buffer.from(signature_key)
+
+            if(signatureBuffer.length !== receivedSignatureBuffer.length || !timingSafeEqual(signatureBuffer, receivedSignatureBuffer)) {
+                return response.error(res, false, "Invalide signature")
+            }
+
+
+            const order = await OrderModel.findOne({orderId: order_id});
+            if(!order) return response.notFound(res, "Order not found")
+
+
+            let newStatus;
+
+            switch (transaction_status) {
+                case "settlement" :
+                    newStatus = orderStatus.PAID;
+                    break;
+                case "capture" :
+                    if(fraud_status === "accept") {
+                        newStatus = orderStatus.COMPLETED;
+                    } 
+                    break;
+                case "cancel" :
+                    newStatus = orderStatus.CANCELLED;
+                    break;
+                case "expire" :
+                    newStatus = orderStatus.EXPIRE;
+                    break;
+                case "pending" :
+                    newStatus = orderStatus.PENDING;
+                    break;
+                default :
+                    return response.success(res, true, "notification received, status not hendled");
+            }
+
+            if(newStatus && order.status !== newStatus) {
+                order.status = newStatus;
+                await order.save();
+            }
+
+            response.success(res, true, "webhook processed successfully")
+        } catch (error) {
+            response.error(res, error, "failed to process webhook");
         }
     }
 }
