@@ -44,8 +44,10 @@ const payment = {
 
 const getMidtrans = async (orderId: string) => {
     try {
-
-        const result = await axios.get(`${MIDTRANS_URL}/${orderId}`, {
+        console.log("ENV URL:", MIDTRANS_URL);
+        console.log("ORDER ID:", orderId);
+        console.log("FINAL URL:", `${MIDTRANS_URL}/${encodeURIComponent(orderId)}/status`);
+        const result = await axios.get(`${MIDTRANS_URL}/${encodeURIComponent(orderId)}/status`, {
             headers: {
                 "Content-Type" : "application/json",
                 Accept: "application/json",
