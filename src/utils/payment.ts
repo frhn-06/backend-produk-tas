@@ -51,6 +51,8 @@ const getMidtrans = async (orderId: string) => {
         }
     })
 
+    console.log("result midtrans", result);
+
     const midtrans = result.data;
     return midtrans;
 }   

@@ -251,11 +251,15 @@ const orderController = {
         try {
            const {orderId} = req.params;
 
-           let order = await OrderModel.findOne({orderId: orderId});
+            let order = await OrderModel.findOne({orderId: orderId});
 
-           if(!order) return response.notFound(res, "order not found");
+            console.log("ORDER FOUND:", order);
+
+            if(!order) return response.notFound(res, "order not found");
 
             const midtrans = await getMidtrans(orderId);
+
+            console.log("MIDTRANS:", midtrans);
 
 
             switch(midtrans.transaction_status) {
