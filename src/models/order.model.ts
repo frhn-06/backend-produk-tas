@@ -90,7 +90,7 @@ const orderSchema = new schema<Order>({
     },
     status: {
         type: schema.Types.String,
-        enum: [orderStatus.COMPLETED, orderStatus.CANCELLED, orderStatus.PENDING, orderStatus.EXPIRE],
+        enum: [orderStatus.COMPLETED, orderStatus.CANCELLED, orderStatus.PENDING, orderStatus.EXPIRE, orderStatus.PAID],
         default: orderStatus.PENDING
     },
     total: {
