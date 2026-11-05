@@ -36,14 +36,15 @@ export default {
             });
         }
 
-        if((error as any)?.code) {
+        if ((error as any)?.code) {
             const err = error as any;
+
             return res.status(500).json({
                 meta: {
                     status: 500,
-                    message: err.errorResponse.errmsg
+                    message: err.errorResponse?.errmsg || err.message || message
                 },
-                data: err
+                data: err.message || err
             });
         }
 
