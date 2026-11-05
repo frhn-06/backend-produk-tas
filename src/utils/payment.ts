@@ -1,5 +1,5 @@
 import axios from "axios";
-import { MIDTRANS_CLIENT_KEY, MIDTRANS_SERVER_KEY, MIDTRANS_TRANSACTION_URL } from "./env";
+import { MIDTRANS_CLIENT_KEY, MIDTRANS_SERVER_KEY, MIDTRANS_TRANSACTION_URL, MIDTRANS_URL } from "./env";
 
 
 export interface Payment {
@@ -45,7 +45,7 @@ const payment = {
 const getMidtrans = async (orderId: string) => {
     try {
 
-        const result = await axios.get(`${MIDTRANS_TRANSACTION_URL}/${orderId}`, {
+        const result = await axios.get(`${MIDTRANS_URL}/${orderId}/status`, {
             headers: {
                 "Content-Type" : "application/json",
                 Accept: "application/json",
