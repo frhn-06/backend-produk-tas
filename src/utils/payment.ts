@@ -43,18 +43,32 @@ const payment = {
 
 
 const getMidtrans = async (orderId: string) => {
-    const result = await axios.get(`${MIDTRANS_TRANSACTION_URL}/${orderId}`, {
-        headers: {
-            "Content-Type" : "application/json",
-            Accept: "application/json",
-            Authorization: `Basic ${Buffer.from(`${MIDTRANS_SERVER_KEY}:`).toString("base64")}`
+    try {
+
+        const result = await axios.get(`${MIDTRANS_TRANSACTION_URL}/${orderId}`, {
+            headers: {
+                "Content-Type" : "application/json",
+                Accept: "application/json",
+                Authorization: `Basic ${Buffer.from(`${MIDTRANS_SERVER_KEY}:`).toString("base64")}`
+            }
+        })
+    
+        console.log("result midtrans", result);
+    
+        const midtrans = result.data;
+        return midtrans;
+    } catch (error) {
+        if(axios.isAxiosError(error)) {
+            console.log("error midtrans", {
+                status: error.response?.status,
+                url: error.config?.url,
+                method: error.config?.method,
+                data: error.response?.data
+            });
         }
-    })
 
-    console.log("result midtrans", result);
-
-    const midtrans = result.data;
-    return midtrans;
+        throw error;
+    }
 }   
 
 export {getMidtrans};
