@@ -249,18 +249,14 @@ const orderController = {
 
     async finish(req: IReqUser, res: Response) {
         try {
-           const {orderId} = req.params;
+            const {orderId} = req.params;
 
             let order = await OrderModel.findOne({orderId: orderId});
-
-            console.log("ORDER FOUND:", order);
 
             if(!order) return response.notFound(res, "order not found");
 
             const midtrans = await getMidtrans(orderId);
-
-            console.log("MIDTRANS:", midtrans);
-
+            console.log("midtrans:", midtrans);
 
             switch(midtrans.transaction_status) {
                 case "settlement":
@@ -324,31 +320,21 @@ const orderController = {
                 .update(`${order_id}${status_code}${gross_amount}${MIDTRANS_SERVER_KEY}`)
                 .digest("hex");
 
-            console.log("SIGNATURE:", signature);
 
             const signatureBuffer = Buffer.from(signature);
-            console.log("SIGNATURE BUFFER:", signatureBuffer);
             const receivedSignatureBuffer = Buffer.from(signature_key);
-            console.log("RECEIVED SIGNATURE BUFFER:", receivedSignatureBuffer);
 
             if(
                 signatureBuffer.length !== receivedSignatureBuffer.length || 
                 !timingSafeEqual(signatureBuffer, receivedSignatureBuffer)
             ) {
-                console.log("INVALID SIGNATURE");
                 return response.error(res, false, "Invalid signature")
             }
 
-
             const order = await OrderModel.findOne({orderId: order_id});
-            console.log("ORDER FOUND:", order);
             if(!order) return response.notFound(res, "Order not found")
 
-
             let newStatus;
-
-            console.log("TRANSACTION STATUS:", transaction_status);
-            console.log("NEW STATUS:", newStatus);
 
             switch (transaction_status) {
                 case "settlement" :
@@ -372,24 +358,11 @@ const orderController = {
                     return response.success(res, true, "notification received, status not hendled");
             }
 
-            console.log("NEW STATUS UPDATED:", newStatus);
-
             if(newStatus && order.status !== newStatus) {
-                console.log("BEFORE SAVE:", {
-                    oldStatus: order.status,
-                    newStatus
-                });
-
                 order.status = newStatus;
 
-                console.log("START SAVING ORDER");
-
                 await order.save();
-
-                console.log("SAVE SUCCESS");
             }
-
-            console.log("ORDER UPDATED:", order);
             
             response.success(res, true, "webhook processed successfully")
         } catch (error) {

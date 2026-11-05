@@ -44,9 +44,6 @@ const payment = {
 
 const getMidtrans = async (orderId: string) => {
     try {
-        console.log("ENV URL:", MIDTRANS_URL);
-        console.log("ORDER ID:", orderId);
-        console.log("FINAL URL:", `${MIDTRANS_URL}/${encodeURIComponent(orderId)}/status`);
         const result = await axios.get(`${MIDTRANS_URL}/${encodeURIComponent(orderId)}/status`, {
             headers: {
                 "Content-Type" : "application/json",
@@ -60,15 +57,7 @@ const getMidtrans = async (orderId: string) => {
         const midtrans = result.data;
         return midtrans;
     } catch (error) {
-        if(axios.isAxiosError(error)) {
-            console.log("error midtrans", {
-                status: error.response?.status,
-                url: error.config?.url,
-                method: error.config?.method,
-                data: error.response?.data
-            });
-        }
-
+        console.error("error get midtrans:", error);
         throw error;
     }
 }   
