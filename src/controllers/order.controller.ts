@@ -351,16 +351,27 @@ const orderController = {
             }
 
             console.log("NEW STATUS UPDATED:", newStatus);
-            
 
             if(newStatus && order.status !== newStatus) {
+                console.log("BEFORE SAVE:", {
+                    oldStatus: order.status,
+                    newStatus
+                });
+
                 order.status = newStatus;
+
+                console.log("START SAVING ORDER");
+
                 await order.save();
+
+                console.log("SAVE SUCCESS");
             }
 
             console.log("ORDER UPDATED:", order);
+            
             response.success(res, true, "webhook processed successfully")
         } catch (error) {
+            console.error("WEBHOOK ERROR:", error);
             response.error(res, error, "failed to process webhook");
         }
     }
