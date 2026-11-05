@@ -5,7 +5,7 @@ import OrderModel, { IProductsForm, Order, orderDTO, orderStatus } from "../mode
 import { FilterQuery, isValidObjectId } from "mongoose";
 import ProductModel from "../models/product.model";
 import UserModel from "../models/user.model";
-import { getStatus } from "../utils/payment";
+import { getMidtrans } from "../utils/payment";
 import cyrpto, { createHash, timingSafeEqual } from "crypto";
 import { MIDTRANS_SERVER_KEY } from "../utils/env";
 
@@ -255,25 +255,43 @@ const orderController = {
 
            if(!order) return response.notFound(res, "order not found");
 
-            const transactionStatus = await getStatus(orderId);
+            const midtrans = await getMidtrans(orderId);
 
-            switch(transactionStatus) {
+
+            switch(midtrans.transaction_status) {
                 case "settlement":
-                    order.status = orderStatus.PAID;
+                    if(order.status === orderStatus.PENDING) {
+                        order.status = orderStatus.PAID;
+                    }
+                    break;
+                case "capture":
+                    if(midtrans.fraud_status === "accept" && order.status === orderStatus.PENDING) {
+                        order.status = orderStatus.PAID;
+                    }
                     break;
                 case "cancel":
-                    order.status = orderStatus.CANCELLED;
+                    if(order.status === orderStatus.PENDING) {
+                        order.status = orderStatus.CANCELLED;
+                    }
                     break;
                 case "expire":
-                    order.status = orderStatus.EXPIRE;
+                    if(order.status === orderStatus.PENDING) {
+                        order.status = orderStatus.EXPIRE;
+                    }
                     break;
                 default:
-                    return response.success(res, {transactionStatus}, "order is still pending");
+                    return response.success(res, {
+                        transactionStatus: midtrans.transaction_status,
+                        order
+                    }, "order status is unChanged, still pending or unknown statuss");
             }
- 
+
            await order.save();
 
-           response.success(res, {transactionStatus, order}, "success to finish order");
+           response.success(res, {
+               transactionStatus: midtrans.transaction_status,
+               order
+           }, "success to finish order");
         }catch (error) {
             response.error(res, error, "failed to finish order");
         }
