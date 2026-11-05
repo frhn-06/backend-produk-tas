@@ -259,7 +259,7 @@ const orderController = {
 
             switch(transactionStatus) {
                 case "settlement":
-                    order.status = orderStatus.COMPLETED;
+                    order.status = orderStatus.PAID;
                     break;
                 case "cancel":
                     order.status = orderStatus.CANCELLED;
